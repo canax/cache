@@ -10,9 +10,11 @@ use Psr\SimpleCache\CacheInterface;
 class FileCache implements CacheInterface
 {
     /**
-     * @var string $cachePath the path to the cache dir.
+     * @var string $cachePath  the path to the cache dir.
+     * @var int    $timeToLive default setting for time to live in seconds.
      */
     private $cachePath;
+    private $timeToLive = 7 * 24 * 60 * 60;
 
 
 
@@ -37,6 +39,22 @@ class FileCache implements CacheInterface
 
 
     /**
+     * Set default setting for time to live for a cache item.
+     *
+     * @param int $timeToLive in seconds.
+     *
+     * @return void.
+     *
+     * @throws \Psr\SimpleCache\CacheException when the path is not writable.
+     */
+    public function setTimeToLive(int $timeToLive) : void
+    {
+        $this->timeToLive = $timeToLive;
+    }
+
+
+
+    /**
      * Fetches a value from the cache.
      *
      * @param string $key     The unique key of this item in the cache.
@@ -53,20 +71,20 @@ class FileCache implements CacheInterface
         $file = $this->filename($key);
 
         if (is_file($file)) {
-            if ($age) {
-                $age = filemtime($file) + $this->config['age'] > time();
-            }
+            // if ($age) {
+            //     $age = filemtime($file) + $this->timeToLive > time();
+            // }
+            // 
+            // if (!$age) {
+            //     // json
+            //     // text
+            //     return unserialize(file_get_contents($file));
+            // }
 
-            if (!$age) {
-                // json
-                // text
-                return unserialize(file_get_contents($file));
-            }
-
-            return false;
+            return unserialize(file_get_contents($file));
         }
 
-        return null;
+        return $default;
     }
 
 
@@ -96,7 +114,7 @@ class FileCache implements CacheInterface
 
         // json
         // text
-        if (!file_put_contents($file, serialize($item))) {
+        if (!file_put_contents($file, serialize($value))) {
             throw new Exception("Failed writing cache object '$key'.");
         }
     }
@@ -127,7 +145,7 @@ class FileCache implements CacheInterface
      */
     public function clear()
     {
-        $files = glob($this->config['basepath'] . '/*');
+        $files = glob($this->cachePath . "/*");
         $items = count($files);
         array_map('unlink', $files);
         return true;
@@ -233,7 +251,7 @@ class FileCache implements CacheInterface
      *
      * @return string the filename.
      */
-    private function createKey($class, $id)
+    public function createKey($class, $id)
     {
         return str_replace('\\', '-', $class) . '#' . $id;
     }
@@ -249,7 +267,7 @@ class FileCache implements CacheInterface
      */
     private function filename($key)
     {
-        return $cachePath . '/' . $key;
+        return $this->cachePath . "/" . $key;
     }
 
 

@@ -3,6 +3,13 @@ Revision history
 
 
 
+v2.0.0-beta.3 (2018-10-15)
+---------------------------------
+
+* Tested with anax/content, intermediate.
+
+
+
 v2.0.0-beta.2 (2018-10-15)
 ---------------------------------
 

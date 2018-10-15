@@ -4,9 +4,9 @@
  */
 return [
     // Use for styling the menu
-    //"basepath" => ANAX_APP_PATH . "/cache",
-    "basepath" => ANAX_INSTALL_PATH . "/cache",
+    //"basePath" => ANAX_APP_PATH . "/cache",
+    "basePath" => ANAX_INSTALL_PATH . "/cache",
 
-    // Default age until item expires
-    "age" => 7 * 24 * 60 * 60,
+    // Default time to live until item expires
+    "timeToLive" => 7 * 24 * 60 * 60,
 ];
