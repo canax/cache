@@ -3,6 +3,13 @@ Revision history
 
 
 
+v2.0.0-beta.4 (2018-10-19)
+---------------------------------
+
+* Improve error message when failure in di.
+
+
+
 v2.0.0-beta.3 (2018-10-15)
 ---------------------------------
 

@@ -19,7 +19,7 @@ return [
 
                 $path = $config["basePath"] ?? null;
                 if (!$path || !is_dir($path) || !is_writable($path)) {
-                    throw new Exception("Configuration file '$file': Cachedir is not a writable directory.");
+                    throw new Exception("Configuration file 'config/cache.php': Cachedir '$path' is not a writable directory.");
                 }
                 $cache->setPath($path);
 
